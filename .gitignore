@@ -1,0 +1,6 @@
+# Ignore cpp binaries
+# Ignore all
+*
+# Unignore all with extensions
+!*.cpp
+!**/

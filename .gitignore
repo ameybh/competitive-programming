@@ -3,4 +3,6 @@
 *
 # Unignore all with extensions
 !*.cpp
+!*.py
+!*.java
 !**/

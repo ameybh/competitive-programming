@@ -12,34 +12,35 @@ typedef long long ll;
 #define all(x) (x).begin(), (x).end()
 #define rall(x) (x).rbegin, (x).rend()
 #define MOD 1000000007
-const int nax = 2e5 + 10;
-const int k = 25;
-int logs[nax+5];
-int st[nax+5][k+1];
+const int MAXN = 2e5 + 5;
+const int K = 25;
+int logs[MAXN + 1];
+int st[MAXN + 1][K + 1];
 int main() {
 	ios_base::sync_with_stdio(false);cin.tie(NULL);
+	// precompute all logarithms
 	logs[1] = 0;
-	for (int i = 2; i <= nax; i++)
-    logs[i] = logs[i/2] + 1;
-	int n, q;
-	cin >> n >> q;
-	vector< ll > a(nax);
-	rep(i,0,n) {
-		cin >> a[i];
-		st[i][0] = a[i];
+	rep(i,2,MAXN) {
+		logs[i] = logs[i/2] + 1;
 	}
-	rep(j,1,k+1)
-		for (int i=0; i + (1<<j) <= nax; i++)
-			st[i][j] = min(st[i][j-1], st[i + (1 << (j - 1))][j - 1]);
-	rep(i,0,q) {
+	int N, Q;
+	cin >> N >> Q;
+	rep(i,0,N) {
+		cin >> st[i][0]; 
+	}
+	// precompute sparse table
+	rep(j,1,K+1) {
+		for (int i=0; i + (1<<j) <= N; i++) {
+			st[i][j] = min(st[i][j-1], st[i + (1<<(j-1))][j-1]);
+		}
+	}
+	rep(i,0,Q) {
 		int L, R;
 		cin >> L >> R;
-		--L;
-		--R;
-		// answer query using sparse tables
+		--L; --R;
 		int j = logs[R - L + 1];
-		cout << min(st[L][j], st[R - (1 << j) + 1][j]) << '\n';
-		
+		cout << min(st[L][j], st[R - (1<<j) + 1][j]) << '\n';
 	}
+	
 	return 0;
 }
